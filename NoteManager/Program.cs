@@ -4,7 +4,8 @@ using NoteManager.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Add services to the container.
+builder.Services.AddRazorPages();
 
 //--------------------------------------------------------------------------------------------------------
 //https://dotnettutorials.net/lesson/asp-net-core-identity-setup/
