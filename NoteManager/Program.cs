@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NoteManager.Models;
+using NoteManager.tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,13 @@ builder.Services.AddRazorPages();
 //--------------------------------------------------------------------------------------------------------
 //https://dotnettutorials.net/lesson/asp-net-core-identity-setup/
 var connectionString = builder.Configuration.GetConnectionString("SQLServerIdentityConnection") ?? throw new InvalidOperationException("Connection string 'SQLServerIdentityConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+
+builder.Services.AddSingleton<SoftDeleteInterceptor>();
+
+builder.Services.AddDbContext<ApplicationDbContext>((sp,options) =>
+    options.UseSqlServer(connectionString)
+    .AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>())
+    );
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();

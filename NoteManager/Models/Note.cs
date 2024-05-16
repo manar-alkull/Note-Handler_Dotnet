@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using NoteManager.tools;
 
 namespace NoteManager.Models;
 
-public partial class Note
+public partial class Note:ISoftDeletable
 {
     [Key]
     public int Id { get; set; }
@@ -22,4 +23,7 @@ public partial class Note
 
     [Column("OwnerID")]
     public string OwnerId { get; set; } = "";
+
+
+    public bool IsDeleted { get; set; }
 }

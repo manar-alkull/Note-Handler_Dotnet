@@ -11,5 +11,12 @@ namespace NoteManager.Models
         {
         }
         public DbSet<NoteManager.Models.Note> Notes { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Note>().HasQueryFilter(r => !r.IsDeleted);
+            base.OnModelCreating(modelBuilder);
+
+        }
     }
 }
