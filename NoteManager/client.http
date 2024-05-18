@@ -1,0 +1,19 @@
+﻿@host = https://localhost:7035
+# https://localhost:7035/Auth/api/Register 
+###
+
+GET {{host}}/api/Values
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYTNAYSIsImp0aSI6IjllNGVjZjJlLWM0Y2QtNDkyMi1iMTJiLTlmYjVhY2U3MzJmYSIsImV4cCI6MTcxNjAyOTE4Nn0.yHb5_wxHPxjKOJyt6IdsjcACC0ZX5xpepcJLA1eysRs
+
+###
+
+POST {{host}}/api/authenticate/login 
+Content-Type: application/json
+Accept: */*
+
+{
+  "Username": "a3@a",
+  "Password": "Aaa@123"
+}
+
+###

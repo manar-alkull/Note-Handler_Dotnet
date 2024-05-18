@@ -1,9 +1,42 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NoteManager.Models;
 using NoteManager.tools;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var TokenSecret = builder.Configuration.GetValue<string>("JWT:Secret");
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Home/Error";
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidAudience = " you site link blah blah",
+                    ValidIssuer = "You Site link Blah  blah",
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(TokenSecret))
+                    ,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -20,12 +53,20 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp,options) =>
     );
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders(); 
+;
 //--------------------------------------------------------------------------------------------------------
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+
+
+
+//-----------------------------------------------------------------------
 
 var app = builder.Build();
 
