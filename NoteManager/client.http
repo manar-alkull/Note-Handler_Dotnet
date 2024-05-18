@@ -1,0 +1,44 @@
+﻿@host = https://localhost:7035
+# https://localhost:7035/Auth/api/Register 
+###
+
+GET {{host}}/api/Values
+
+
+###
+
+POST {{host}}/account/Register
+Content-Type: 'application/json'
+
+{
+  "email": "string",
+  "password": "string"
+}
+
+###
+
+POST {{host}}/api/Auth2/Register 
+Content-Type: application/json
+Accept: */*
+
+{
+  "email": "a3@a",
+  "password": "Aaa@123",
+  "ConfirmPassword": "Aaa@123"
+}
+
+###
+
+###
+
+POST {{host}}/api/Auth2/Signin 
+Content-Type: application/json
+Accept: */*
+
+{
+  "email": "a3@a",
+  "password": "Aaa@123",
+  "ConfirmPassword": "Aaa@123"
+}
+
+###
