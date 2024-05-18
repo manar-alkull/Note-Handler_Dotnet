@@ -17,3 +17,35 @@ Accept: */*
 }
 
 ###
+
+
+### Notes
+
+GET {{host}}/api/Notes_
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYTNAYSIsImp0aSI6IjllNGVjZjJlLWM0Y2QtNDkyMi1iMTJiLTlmYjVhY2U3MzJmYSIsImV4cCI6MTcxNjAyOTE4Nn0.yHb5_wxHPxjKOJyt6IdsjcACC0ZX5xpepcJLA1eysRs
+
+###
+
+GET {{host}}/api/Notes_/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYTNAYSIsImp0aSI6IjllNGVjZjJlLWM0Y2QtNDkyMi1iMTJiLTlmYjVhY2U3MzJmYSIsImV4cCI6MTcxNjAyOTE4Nn0.yHb5_wxHPxjKOJyt6IdsjcACC0ZX5xpepcJLA1eysRs
+Content-Type: application/json
+Accept: */*
+
+###
+
+POST {{host}}/api/Notes_
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYTNAYSIsImp0aSI6IjllNGVjZjJlLWM0Y2QtNDkyMi1iMTJiLTlmYjVhY2U3MzJmYSIsImV4cCI6MTcxNjAyOTE4Nn0.yHb5_wxHPxjKOJyt6IdsjcACC0ZX5xpepcJLA1eysRs
+Content-Type: application/json
+Accept: */*
+
+{
+    "title": "new note",
+    "content": "new note content"
+}
+
+###
+
+DELETE {{host}}/api/Notes_/3004
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYTNAYSIsImp0aSI6IjllNGVjZjJlLWM0Y2QtNDkyMi1iMTJiLTlmYjVhY2U3MzJmYSIsImV4cCI6MTcxNjAyOTE4Nn0.yHb5_wxHPxjKOJyt6IdsjcACC0ZX5xpepcJLA1eysRs
+
+###
