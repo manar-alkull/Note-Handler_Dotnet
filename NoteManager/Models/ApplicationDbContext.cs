@@ -11,6 +11,7 @@ namespace NoteManager.Models
         {
         }
         public DbSet<NoteManager.Models.Note> Notes { get; set; } = default!;
+        public DbSet<NoteManager.Models.PublicLink> PublicLink { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
