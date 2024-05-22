@@ -13,14 +13,10 @@ namespace ASPNETCoreIdentityDemo.Controllers
 {
     public class AccountController : Controller
     {
-        //userManager will hold the UserManager instance
         private readonly UserManager<IdentityUser> userManager;
 
-        //signInManager will hold the SignInManager instance
         private readonly SignInManager<IdentityUser> signInManager;
 
-        //Both UserManager and SignInManager services are injected into the AccountController
-        //using constructor injection
         public AccountController(UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
@@ -39,18 +35,14 @@ namespace ASPNETCoreIdentityDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Copy data from RegisterViewModel to IdentityUser
                 var user = new IdentityUser
                 {
                     UserName = model.Email,
                     Email = model.Email
                 };
 
-                // Store user data in AspNetUsers database table
                 var result = await userManager.CreateAsync(user, model.Password);
 
-                // If user is successfully created, sign-in the user using
-                // SignInManager and redirect to index action of HomeController
                 if (result.Succeeded)
                 {
                     await confirmEmail( user);
@@ -58,8 +50,6 @@ namespace ASPNETCoreIdentityDemo.Controllers
                     return RedirectToAction("index", "home");
                 }
 
-                // If there are any errors, add them to the ModelState object
-                // which will be displayed by the validation summary tag helper
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -107,7 +97,6 @@ namespace ASPNETCoreIdentityDemo.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
