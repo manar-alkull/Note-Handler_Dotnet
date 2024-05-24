@@ -5,23 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NoteManager.tools;
 
-namespace NoteManager.Models;
+namespace NoteManager.Models.Requests;
 
-public class Note:ISoftDeletable
+public class NoteRequest
 {
-    [Key]
     public int Id { get; set; }
-
-    [Unicode(false)]
     public string? Title { get; set; }
-
-    [Unicode(false)]
     public string? Content { get; set; }
-    public string? ImagePath { get; set; }
-
-    [Column("OwnerID")]
-    public string OwnerId { get; set; } = "";
+    public IFormFile? AttachedImage { get; set; }
 
 
-    public bool IsDeleted { get; set; }
 }

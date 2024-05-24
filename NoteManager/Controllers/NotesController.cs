@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NoteManager.Models;
+using NoteManager.Models.Requests;
+using NoteManager.tools;
 
 namespace NoteManager.Controllers
 {
@@ -54,20 +56,24 @@ namespace NoteManager.Controllers
         }
 
         // POST: Notes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content")] Note note)
+        public async Task<IActionResult> Create( NoteRequest noteReq)
         {
+            Note note = new Note();
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             note.OwnerId = userId;
             if (ModelState.IsValid)
             {
+                note.Title=noteReq.Title;
+                note.Content=noteReq.Content;
+                if(noteReq.AttachedImage!=null)
+                    note.ImagePath = FileService.Instance.SaveFile(@"uploads\notes-images", noteReq.AttachedImage);
                 _context.Add(note);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(note);
         }
 
@@ -85,17 +91,17 @@ namespace NoteManager.Controllers
                 return NotFound();
             }
 
-            return View(note);
+            return View(new NoteRequest() { Id=note.Id, Content=note.Content, Title=note.Title});
         }
 
         // POST: Notes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content")] Note note)
+        public async Task<IActionResult> Edit(int id, NoteRequest noteReq)
         {
-            if (id != note.Id)
+            Note note = await _context.Notes.FindAsync(id);
+
+            if (note ==null)
             {
                 return NotFound();
             }
@@ -107,6 +113,14 @@ namespace NoteManager.Controllers
             {
                 try
                 {
+                    if (noteReq.AttachedImage != null)
+                    {
+
+                        string? oldPath = note.ImagePath;
+                        note.ImagePath = FileService.Instance.SaveFile(@"uploads\notes-images", noteReq.AttachedImage);
+                        FileService.Instance.DeleteFileAsync(oldPath);
+                    }
+
                     _context.Update(note);
                     await _context.SaveChangesAsync();
                 }
@@ -150,12 +164,17 @@ namespace NoteManager.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var note = await _context.Notes.FindAsync(id);
+            string? imgPath=null;
             if (note != null)
             {
+                imgPath = note.ImagePath;
                 _context.Notes.Remove(note);
             }
 
             await _context.SaveChangesAsync();
+            if(imgPath != null)
+                FileService.Instance.DeleteFileAsync(imgPath);
+
             return RedirectToAction(nameof(Index));
         }
 
